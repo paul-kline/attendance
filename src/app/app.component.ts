@@ -1,6 +1,4 @@
 import { Component } from "@angular/core";
-import { AngularFireAuth } from "angularfire2/auth";
-import { auth } from "firebase";
 import { ChatboxService } from "./chatbox.service";
 @Component({
   selector: "app-root",
@@ -16,13 +14,8 @@ export class AppComponent {
   lat: number = 51.678418;
   lng: number = 7.809007;
   success = false;
-  constructor(public afAuth: AngularFireAuth, public chatbox: ChatboxService) {}
-  login() {
-    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
-  }
-  logout() {
-    this.afAuth.auth.signOut();
-  }
+  constructor(public chatbox: ChatboxService) {}
+
   attendance() {
     this.checkintext = "checking...";
     if ("geolocation" in navigator) {
@@ -47,9 +40,9 @@ export class AppComponent {
 
     this.checkintext = "success!";
     this.message = "You are checked in";
-    console.log(auth);
+    // console.log(auth);
     this.success = true;
-    window.auth = this.afAuth;
+    // window.auth = this.afAuth;
   }
   positionfailed(err) {
     console.log("error", err);

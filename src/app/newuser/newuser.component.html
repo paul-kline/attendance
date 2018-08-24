@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="mb-3">
+    <span>It looks like this is your first time logging in. Let's get you started.</span>
+
+  </div>
+  <hr>
+  <div>
+    <div>
+      Are you an organizer or an attendee?
+    </div>
+    <div>
+      (don't worry, you can always add classes later)
+    </div>
+  </div>
+  <div class="btn-group btn-group-toggle mt-1" ngbRadioGroup name="radioBasic" [(ngModel)]="model">
+    <label ngbButtonLabel class="btn-primary">
+      <input [routerLink]="['organizer']" ngbButton type="radio" value="organizer"> Organizer
+    </label>
+    <label ngbButtonLabel class="btn-primary">
+      <input [routerLink]="['attendee']" ngbButton type="radio" value="attendee"> Attendee
+    </label>
+  </div>
+
+  <pre>I am an <span style="font-weight: bold">{{model}}</span>. </pre>
+  <hr>
+  <router-outlet></router-outlet>
+
+</div>

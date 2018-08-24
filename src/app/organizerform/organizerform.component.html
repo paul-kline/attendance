@@ -1,0 +1,73 @@
+<div>What is the name of your class? For example, EECS 368 Fall 2018
+  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="EECS 368 Fall 2018"
+    [value]="className">
+</div>
+<hr>
+
+<app-daterangepicker [daterange]="organization.dateRange"></app-daterangepicker>
+
+<div class="mt-2">When does this class normally meet in a week? (You can fine tune this later for holidays, etc)</div>
+<app-weeklychooser></app-weeklychooser>
+
+<hr>
+
+<div>What time does this class normally meet? (You may want to specify earlier than actual start so participants are allowed
+  to check in just before)
+  <form class="form-inline">
+    <label class="sr-only" for="inlineFormInputName2">From time</label>
+    <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">from</div>
+      </div>
+      <input type="time" id="fromtime" class="form-control" name="fromTime" [(ngModel)]="organization.fromTime">
+    </div>
+    <label class="sr-only" for="inlineFormInputGroupUsername2">To time</label>
+    <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">to</div>
+      </div>
+      <input type="time" class="form-control" id="inlineFormInputGroupUsername2">
+    </div>
+
+
+  </form>
+
+</div>
+
+<hr>
+
+<div>
+  What are the geographic coordinates of the <i>most common</i> meeting space? You can use <a target="_blank" href="//www.google.com/maps/">Google
+    Maps
+  </a> to get the exact coordinates. (You can fine tune the location for each meeting later if necessary)
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon3">Lat:</span>
+    </div>
+    <input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon3" [value]="organization.lat">
+  </div>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon3">Lng:</span>
+    </div>
+    <input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon3" [value]="organization.lng">
+  </div>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon3">Must be within:</span>
+    </div>
+    <input type="number" class="form-control" id="distance" aria-describedby="basic-addon3" [(value)]="organization.distance">
+    <div class="input-group-append">
+      <span class="input-group-text" id="basic-addon2">meters.</span>
+    </div>
+  </div>
+  <hr>
+  <button class="btn btn-primary" (click)="generatemeetings()">Generate List of Meetings!</button>
+  <hr>
+  <div *ngIf="organization.meetings">
+    <div *ngFor="let meeting of organization.meetings">
+      <app-meeting [meeting]="meeting"></app-meeting>
+
+    </div>
+  </div>
+</div>
