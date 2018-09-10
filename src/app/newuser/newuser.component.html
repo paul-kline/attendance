@@ -1,28 +1,31 @@
-<div class="container">
-  <div class="mb-3">
-    <span>It looks like this is your first time logging in. Let's get you started.</span>
-
-  </div>
-  <hr>
-  <div>
-    <div>
-      Are you an organizer or an attendee?
-    </div>
-    <div>
-      (don't worry, you can always add classes later)
-    </div>
-  </div>
-  <div class="btn-group btn-group-toggle mt-1" ngbRadioGroup name="radioBasic" [(ngModel)]="model">
-    <label ngbButtonLabel class="btn-primary">
-      <input [routerLink]="['organizer']" ngbButton type="radio" value="organizer"> Organizer
-    </label>
-    <label ngbButtonLabel class="btn-primary">
-      <input [routerLink]="['attendee']" ngbButton type="radio" value="attendee"> Attendee
-    </label>
+<div class="contadiner">
+  <div class="jumbotron">
+    <h1 class="display-4">Welcome</h1>
+    <p class="lead">It looks like this is your first time logging in. Let's get you started!</p>
+    <!-- <hr class="my-4"> -->
   </div>
 
-  <pre>I am an <span style="font-weight: bold">{{model}}</span>. </pre>
-  <hr>
+  <div class=container>
+    <div>
+      <div>
+        Are you an organizer or an attendee?
+      </div>
+      <div>
+        (don't worry, you can always add classes later)
+      </div>
+    </div>
+    <mat-card>
+      <span class="mr-2">I am an:</span>
+      <mat-form-field>
+        <mat-select [(value)]="selectedRole" placeholder="Choose your role">
+          <mat-option *ngFor="let option of options" [value]="option.value" [routerLink]="[option.link]">
+            {{option.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+
+  </div>
   <router-outlet></router-outlet>
 
 </div>

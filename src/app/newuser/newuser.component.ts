@@ -7,9 +7,23 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./newuser.component.css"]
 })
 export class NewuserComponent implements OnInit {
-  model = "";
+  selectedRole: String;
   test: Date = new Date();
-  constructor() {}
+  options;
+  constructor() {
+    this.options = [
+      {
+        value: "Attendee",
+        viewValue: "Attendee",
+        link: "/attendee"
+      },
+      {
+        value: "Organizer",
+        viewValue: "Organizer",
+        link: "/organizer"
+      }
+    ];
+  }
 
   ngOnInit() {}
 }

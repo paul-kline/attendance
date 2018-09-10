@@ -1,10 +1,16 @@
-<nav class="navbar navbar-expand-lg fixed-topx navbar-light bg-info ml-auto">
-  <span>Welcome to A Ten Dance.</span>
-  <div class="ml-auto " *ngIf="credentialService.afAuth.user | async as user; else showLogin">
-    <span class="mr-2">Hello {{ user.displayName }}!</span>
-    <button type="button" class="btn btn-secondary btn-lg" (click)="credentialService.logout()">Logout</button>
-  </div>
-  <ng-template #showLogin>
-    <button type="button" class=" ml-auto btn btn-primary btn-lg" (click)="credentialService.login()">Login with Google</button>
-  </ng-template>
-</nav>
+<mat-toolbar color="primary">
+  <span>@tendance</span>
+
+  <!-- This fills the remaining space of the current row -->
+  <span class="fill-remaining-space"></span>
+
+  <span>
+    <div *ngIf="credentialService.afAuth.user | async as user; else showLogin">
+      <span class="mr-2">Hello {{ user.displayName }}!</span>
+      <button mat-stroked-button (click)="credentialService.logout()">Logout</button>
+    </div>
+    <ng-template #showLogin>
+      <button mat-stroked-button (click)="credentialService.login()">Login</button>
+    </ng-template>
+  </span>
+</mat-toolbar>

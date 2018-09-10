@@ -52,7 +52,8 @@ export class CredentialsService {
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
-          me.router.navigateByUrl("/newuser");
+          console.log("this user has no account yet.");
+          // me.router.navigateByUrl("/newuser");
         }
       })
       .catch(function(error) {

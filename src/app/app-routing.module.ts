@@ -7,12 +7,10 @@ import { AttendeeformComponent } from "./attendeeform/attendeeform.component";
 const routes: Routes = [
   {
     path: "newuser",
-    component: NewuserComponent,
-    children: [
-      { path: "organizer", component: OrganizerformComponent },
-      { path: "attendee", component: AttendeeformComponent }
-    ]
-  }
+    component: NewuserComponent
+  },
+  { path: "organizer", component: OrganizerformComponent },
+  { path: "attendee", component: AttendeeformComponent }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -2,6 +2,7 @@ import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
 import { Meeting } from "./Meeting";
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 import { DateRange } from "./DateRange";
+import { LatLng } from "@agm/core";
 
 export class Organizer {
   dateRange: DateRange;
@@ -17,7 +18,7 @@ export class Organizer {
     U: false
   };
   name: String;
-  location: Geolocation;
+  location: LatLng;
   distance: Number;
   meetings: Array<Meeting>;
   constructor() {

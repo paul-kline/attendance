@@ -18,10 +18,19 @@ import { FormsModule } from "@angular/forms";
 import { OrganizerformComponent } from "./organizerform/organizerform.component";
 import { AttendeeformComponent } from "./attendeeform/attendeeform.component";
 import { ToUSDatePipe } from "./to-usdate.pipe";
-import { WeeklychooserComponent } from './weeklychooser/weeklychooser.component';
-import { DaterangepickerComponent } from './daterangepicker/daterangepicker.component';
-import { DatetimepickerComponent } from './datetimepicker/datetimepicker.component';
-import { MeetingComponent } from './meeting/meeting.component';
+import { WeeklychooserComponent } from "./weeklychooser/weeklychooser.component";
+import { DaterangepickerComponent } from "./daterangepicker/daterangepicker.component";
+import { DatetimepickerComponent } from "./datetimepicker/datetimepicker.component";
+import { MeetingComponent } from "./meeting/meeting.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatCardModule } from "@angular/material/card";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatInputModule } from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -49,7 +58,16 @@ import { MeetingComponent } from './meeting/meeting.component';
     }),
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatStepperModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
