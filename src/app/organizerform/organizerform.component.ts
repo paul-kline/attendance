@@ -42,19 +42,20 @@ export class OrganizerformComponent implements OnInit {
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
-          firstNameFormCtrl: ["", Validators.required],
-          lastNameFormCtrl: ["", Validators.required]
+          nameFormCtrl: ["", Validators.required]
+          // ,lastNameFormCtrl: ["", Validators.required]
         }),
         this._formBuilder.group({
-          emailFormCtrl: ["", Validators.email]
+          startDateFormCtrl: ["", Validators.required],
+          endDateFormCtrl: ["", Validators.required]
         })
       ])
     });
 
-    this.nameFormGroup = this._formBuilder.group({
-      firstNameCtrl: ["", Validators.required],
-      lastNameCtrl: ["", Validators.required]
-    });
+    // this.nameFormGroup = this._formBuilder.group({
+    //   nameFormCtrl: ["bob", Validators.required]
+    //   // ,lastNameCtrl: ["", Validators.required]
+    // });
 
     // this.emailFormGroup = this._formBuilder.group({
     //   emailCtrl: ["", Validators.email]

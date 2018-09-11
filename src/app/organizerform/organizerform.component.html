@@ -1,11 +1,11 @@
 <form [formGroup]="formGroup">
   <mat-horizontal-stepper formArrayName="formArray" linear>
     <mat-step formGroupName="0" [stepControl]="formArray.get([0])">
-      <ng-template matStepLabel>Name</ng-template>
+      <ng-template matStepLabel>What</ng-template>
       <div>What is the name of your class? For example, EECS 368 Fall 2018</div>
       <mat-form-field>
         <mat-label>Class Name</mat-label>
-        <input matInput formControlName="firstNameFormCtrl" required>
+        <input matInput formControlName="nameFormCtrl" required>
         <mat-error>This field is required</mat-error>
       </mat-form-field>
       <div>
@@ -13,13 +13,64 @@
       </div>
     </mat-step>
     <mat-step formGroupName="1" [stepControl]="formArray.get([1])">
-      ...
+      <ng-template matStepLabel>
+        <div>When</div>
+      </ng-template>
+      <mat-form-field class="mr-2">
+        <input matInput [matDatepicker]="pickerstart" placeholder="Start Date" required formControlName="startDateFormCtrl">
+        <mat-datepicker-toggle matSuffix [for]="pickerstart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerstart></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerend" placeholder="End Date" required formControlName="endDateFormCtrl">
+        <mat-datepicker-toggle matSuffix [for]="pickerend"></mat-datepicker-toggle>
+        <mat-datepicker #pickerend></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-chip-list>
+          <mat-chip>M</mat-chip>
+          <mat-chip>T</mat-chip>
+          <mat-chip>W</mat-chip>
+          <mat-chip>R</mat-chip>
+          <mat-chip>F</mat-chip>
+          <mat-chip>S</mat-chip>
+          <mat-chip>U</mat-chip>
+
+        </mat-chip-list>
+      </mat-form-field>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
         <button mat-button matStepperNext type="button">Next</button>
       </div>
     </mat-step>
-    ...
+    <mat-step formGroupName="1" [stepControl]="formArray.get([2])">
+      <ng-template matStepLabel>
+        <div>Where</div>
+      </ng-template>
+      <mat-form-field>
+        <mat-label>Email address</mat-label>
+        <input matInput formdControlName="emailFormCtrl">
+        <mat-error>The input is invalid.</mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+    </mat-step>
+    <mat-step formGroupName="1" [stepControl]="formArray.get([3])">
+      <ng-template matStepLabel>
+        <div>Customize</div>
+      </ng-template>
+      <mat-form-field>
+        <mat-label>Email address</mat-label>
+        <input matInput formdControlName="emailFormCtrl">
+        <mat-error>The input is invalid.</mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+    </mat-step>
   </mat-horizontal-stepper>
 </form>
 

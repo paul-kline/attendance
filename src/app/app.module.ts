@@ -30,7 +30,14 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatStepperModule } from "@angular/material/stepper";
-import { MatInputModule } from "@angular/material";
+import {
+  MatInputModule,
+  MatNativeDateModule,
+  MatIconModule,
+  MatChipsModule
+} from "@angular/material";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MaterialWeeklyChooserComponent } from "./material-weekly-chooser/material-weekly-chooser.component";
 
 @NgModule({
   declarations: [
@@ -44,7 +51,8 @@ import { MatInputModule } from "@angular/material";
     WeeklychooserComponent,
     DaterangepickerComponent,
     DatetimepickerComponent,
-    MeetingComponent
+    MeetingComponent,
+    MaterialWeeklyChooserComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +75,11 @@ import { MatInputModule } from "@angular/material";
     MatCardModule,
     ReactiveFormsModule,
     MatStepperModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
