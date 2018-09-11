@@ -20,6 +20,16 @@ export class OrganizerformComponent implements OnInit {
   organization: Organizer;
   formGroup: FormGroup;
 
+  week = [
+    { letter: "M", selected: false },
+    { letter: "T", selected: false },
+    { letter: "W", selected: false },
+    { letter: "R", selected: false },
+    { letter: "F", selected: false },
+    { letter: "S", selected: false },
+    { letter: "U", selected: false }
+  ];
+
   nameFormGroup: FormGroup; //name the class
   whenFormGroup: FormGroup; //When info like date interval, time, days of week.
   whereFormGroup: FormGroup;
@@ -32,6 +42,10 @@ export class OrganizerformComponent implements OnInit {
     private _formBuilder: FormBuilder
   ) {}
 
+  chipclicked(day) {
+    day.selected = !day.selected;
+    console.log(this.week);
+  }
   generatemeetings() {
     console.log("generating meetings");
     this.organization.generateMeetings();
@@ -42,13 +56,16 @@ export class OrganizerformComponent implements OnInit {
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
-          nameFormCtrl: ["", Validators.required]
+          nameFormCtrl: ["", null] //Validators.required]
           // ,lastNameFormCtrl: ["", Validators.required]
         }),
         this._formBuilder.group({
-          startDateFormCtrl: ["", Validators.required],
-          endDateFormCtrl: ["", Validators.required]
-        })
+          startDateFormCtrl: ["", null], //Validators.required],
+          endDateFormCtrl: ["", null], //Validators.required],
+          startTimeFormCtrl: ["", null], //Validators.required],
+          endTimeFormCtrl: ["", null] //Validators.required]
+        }),
+        this._formBuilder.group({})
       ])
     });
 

@@ -1,11 +1,12 @@
-<form [formGroup]="formGroup">
+<app-meeting></app-meeting>
+<form [formGroup]="formGroup" class="flex-scolumn-center">
   <mat-horizontal-stepper formArrayName="formArray" linear>
-    <mat-step formGroupName="0" [stepControl]="formArray.get([0])">
+    <mat-step class="flex-column-center" formGroupName="0" [stepControl]="formArray.get([0])">
       <ng-template matStepLabel>What</ng-template>
       <div>What is the name of your class? For example, EECS 368 Fall 2018</div>
       <mat-form-field>
         <mat-label>Class Name</mat-label>
-        <input matInput formControlName="nameFormCtrl" required>
+        <input matInput formControlName="nameFormCtrl" _required focused>
         <mat-error>This field is required</mat-error>
       </mat-form-field>
       <div>
@@ -17,41 +18,65 @@
         <div>When</div>
       </ng-template>
       <mat-form-field class="mr-2">
-        <input matInput [matDatepicker]="pickerstart" placeholder="Start Date" required formControlName="startDateFormCtrl">
+        <input matInput [matDatepicker]="pickerstart" placeholder="Start Date" _required formControlName="startDateFormCtrl">
         <mat-datepicker-toggle matSuffix [for]="pickerstart"></mat-datepicker-toggle>
         <mat-datepicker #pickerstart></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="pickerend" placeholder="End Date" required formControlName="endDateFormCtrl">
+        <input matInput [matDatepicker]="pickerend" placeholder="End Date" _required formControlName="endDateFormCtrl">
         <mat-datepicker-toggle matSuffix [for]="pickerend"></mat-datepicker-toggle>
         <mat-datepicker #pickerend></mat-datepicker>
       </mat-form-field>
-      <mat-form-field>
-        <mat-chip-list>
-          <mat-chip>M</mat-chip>
-          <mat-chip>T</mat-chip>
-          <mat-chip>W</mat-chip>
-          <mat-chip>R</mat-chip>
-          <mat-chip>F</mat-chip>
-          <mat-chip>S</mat-chip>
-          <mat-chip>U</mat-chip>
-
+      <mat-divider></mat-divider>
+      <div>Days of the week:</div>
+      <mat-form-field class="one-line">
+        <mat-chip-list [multiple]="true" class="flex-row">
+          <mat-chip *ngFor="let day of week" (click)="chipclicked(day)" [selected]="day.selected" class="flex-item">
+            {{day.letter}}
+          </mat-chip>
         </mat-chip-list>
+
       </mat-form-field>
+      <div>Enter the starting and ending times. Note that this is the time
+        users will be able to mark themselves as present. You probably want to set
+        this start time to be before your actual start time so that attendees who
+        arrive early can check in. Similarly, you may want to set the end time before your actual
+        event ends so that attendees who only show up to the end cannot check in. It is up to you (you can tweak
+        individual times in the last section). </div>
+      <mat-form-field>
+        <input matInput type="time" placeholder="Start Time" formControlName="startTimeFormCtrl">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="time" placeholder="End Time" formControlName="endTimeFormCtrl">
+      </mat-form-field>
+
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
         <button mat-button matStepperNext type="button">Next</button>
       </div>
     </mat-step>
-    <mat-step formGroupName="1" [stepControl]="formArray.get([2])">
+    <mat-step formGroupName="2" [stepControl]="formArray.get([2])">
       <ng-template matStepLabel>
         <div>Where</div>
       </ng-template>
+
+      <div>What are the geographic coordinates (in lat,lng format) of the <i>most common</i> meeting space? You can
+        use <a target="_blank" href="//www.google.com/maps/">Google
+          Maps
+        </a> to get the exact coordinates. (You can fine tune the location for each meeting later if necessary)
+
+      </div>
       <mat-form-field>
-        <mat-label>Email address</mat-label>
-        <input matInput formdControlName="emailFormCtrl">
+        <mat-label>Coordinates</mat-label>
+        <input matInput placeholder="latitude,longitude" formdControlName="coordsFormCtrl">
         <mat-error>The input is invalid.</mat-error>
       </mat-form-field>
+      <div>Attendees must be within: <mat-form-field>
+          <mat-label>Meters</mat-label>
+          <input matInput formdControlName="coordsFormCtrl">
+          <mat-error>The input is invalid.</mat-error>
+        </mat-form-field> meters to check in.
+      </div>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
         <button mat-button matStepperNext type="button">Next</button>
@@ -61,11 +86,11 @@
       <ng-template matStepLabel>
         <div>Customize</div>
       </ng-template>
-      <mat-form-field>
+      <!-- <mat-form-field>
         <mat-label>Email address</mat-label>
         <input matInput formdControlName="emailFormCtrl">
         <mat-error>The input is invalid.</mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
         <button mat-button matStepperNext type="button">Next</button>
@@ -74,7 +99,7 @@
   </mat-horizontal-stepper>
 </form>
 
-
+<!-- 
 <div>What is the name of your class? For example, EECS 368 Fall 2018
   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="EECS 368 Fall 2018"
     [value]="className">
@@ -149,3 +174,4 @@
     </div>
   </div>
 </div>
+ -->

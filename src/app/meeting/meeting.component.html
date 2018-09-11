@@ -1,4 +1,25 @@
-<app-datetimepicker [datetime]="meeting.from"></app-datetimepicker>
+<!-- <app-datetimepicker [datetime]="meeting.from"></app-datetimepicker>
 <app-datetimepicker [datetime]="meeting.to"></app-datetimepicker>
 <input type="number" [(ngModel)]="meeting.lat">
-<input type="number" [(ngModel)]="meeting.lng">
+<input type="number" [(ngModel)]="meeting.lng"> -->
+In app meeting
+<div class="flex-row">
+
+    <mat-form-field>
+        <mat-label>Starting</mat-label>
+        <input matInput placeholder="starting" type="datetime-local">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Ending</mat-label>
+        <input matInput placeholder="ending" type="datetime-local">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Location</mat-label>
+        <input matInput placeholder="lat, lng">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Within</mat-label>
+        <input matInput placeholder="meters">
+    </mat-form-field>
+
+</div>

@@ -34,7 +34,8 @@ import {
   MatInputModule,
   MatNativeDateModule,
   MatIconModule,
-  MatChipsModule
+  MatChipsModule,
+  MatDividerModule
 } from "@angular/material";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MaterialWeeklyChooserComponent } from "./material-weekly-chooser/material-weekly-chooser.component";
@@ -79,7 +80,8 @@ import { MaterialWeeklyChooserComponent } from "./material-weekly-chooser/materi
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
