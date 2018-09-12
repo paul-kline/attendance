@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgbDate, NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
 import { OrganizationformdataService } from "../organizationformdata.service";
-import { Organizer } from "../Organizer";
+import { OrganizerFormData } from "../OrganizerFormData";
 import { MatStepperModule } from "@angular/material/stepper";
 import {
   FormBuilder,
@@ -17,18 +17,8 @@ import {
 export class OrganizerformComponent implements OnInit {
   meters: Number = 300;
   className: String = "";
-  organization: Organizer;
+  organizerFormData: OrganizerFormData;
   formGroup: FormGroup;
-
-  week = [
-    { letter: "M", selected: false },
-    { letter: "T", selected: false },
-    { letter: "W", selected: false },
-    { letter: "R", selected: false },
-    { letter: "F", selected: false },
-    { letter: "S", selected: false },
-    { letter: "U", selected: false }
-  ];
 
   nameFormGroup: FormGroup; //name the class
   whenFormGroup: FormGroup; //When info like date interval, time, days of week.
@@ -44,15 +34,15 @@ export class OrganizerformComponent implements OnInit {
 
   chipclicked(day) {
     day.selected = !day.selected;
-    console.log(this.week);
+    console.log(this.organizerFormData.week);
   }
   generatemeetings() {
     console.log("generating meetings");
-    this.organization.generateMeetings();
+    this.organizerFormData.generateMeetings();
   }
 
   ngOnInit() {
-    this.organization = this.orgService.organization;
+    this.organizerFormData = this.orgService.organizerFormData;
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({

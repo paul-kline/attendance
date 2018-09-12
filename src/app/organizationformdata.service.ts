@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Organizer } from "./Organizer";
+import { OrganizerFormData } from "./OrganizerFormData";
 @Injectable({
   providedIn: "root"
 })
 export class OrganizationformdataService {
-  public organization: Organizer;
+  public organizerFormData: OrganizerFormData;
   constructor() {
-    this.organization = new Organizer();
+    this.organizerFormData = new OrganizerFormData();
   }
 }

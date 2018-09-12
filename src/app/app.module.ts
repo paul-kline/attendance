@@ -18,7 +18,6 @@ import { FormsModule } from "@angular/forms";
 import { OrganizerformComponent } from "./organizerform/organizerform.component";
 import { AttendeeformComponent } from "./attendeeform/attendeeform.component";
 import { ToUSDatePipe } from "./to-usdate.pipe";
-import { WeeklychooserComponent } from "./weeklychooser/weeklychooser.component";
 import { DaterangepickerComponent } from "./daterangepicker/daterangepicker.component";
 import { DatetimepickerComponent } from "./datetimepicker/datetimepicker.component";
 import { MeetingComponent } from "./meeting/meeting.component";
@@ -49,7 +48,6 @@ import { MaterialWeeklyChooserComponent } from "./material-weekly-chooser/materi
     OrganizerformComponent,
     AttendeeformComponent,
     ToUSDatePipe,
-    WeeklychooserComponent,
     DaterangepickerComponent,
     DatetimepickerComponent,
     MeetingComponent,
