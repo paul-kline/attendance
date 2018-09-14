@@ -1,6 +1,22 @@
 .flex-row {
   display: flex;
   align-items: baseline;
-  width: max-content;
+  max-width: max-content;
   flex-wrap: wrap;
+}
+
+.flex-row-nowrap {
+  display: flex;
+  align-items: center;
+  max-width: max-content;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+@media (max-width: 824px) {
+  #meetingscontainer {
+    border-bottom: 1px solid lightgray;
+  }
+}
+.longer {
+  min-width: 230px;
 }

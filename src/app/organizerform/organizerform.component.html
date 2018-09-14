@@ -1,36 +1,41 @@
+<mat-icon>home</mat-icon>
+
+
+
 <form [formGroup]="formGroup" class="flex-scolumn-center">
   <mat-horizontal-stepper formArrayName="formArray" linear>
+    <!-- NAME -------------------------------------------------------------------------------------------------->
     <mat-step class="flex-column-center" formGroupName="0" [stepControl]="formArray.get([0])">
       <ng-template matStepLabel>What</ng-template>
       <div>What is the name of your class? For example, EECS 368 Fall 2018</div>
       <mat-form-field>
         <mat-label>Class Name</mat-label>
-        <input matInput formControlName="nameFormCtrl" _required [(ngModel)]="organizerFormData.name">
+        <input matInput #txtname (keyup.enter)="clickelem('namenext')" formControlName="nameFormCtrl" required>
         <mat-error>This field is required</mat-error>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext type="button">Next</button>
+        <button id="namenext" mat-button matStepperNext type="button">Next</button>
       </div>
     </mat-step>
+    <!-- WHEN --------------------------------------------------------------------------------------------------->
     <mat-step formGroupName="1" [stepControl]="formArray.get([1])">
       <ng-template matStepLabel>
         <div>When</div>
       </ng-template>
       <mat-form-field class="mr-2">
-        <input matInput [matDatepicker]="pickerstart" placeholder="Start Date" [value]="organizerFormData.fromDate"
-          _required formControlName="startDateFormCtrl">
+        <input matInput [matDatepicker]="pickerstart" placeholder="Start Date" required formControlName="startDateFormCtrl">
         <mat-datepicker-toggle matSuffix [for]="pickerstart"></mat-datepicker-toggle>
         <mat-datepicker #pickerstart></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="pickerend" placeholder="End Date" _required formControlName="endDateFormCtrl">
+        <input matInput [matDatepicker]="pickerend" placeholder="End Date" required formControlName="endDateFormCtrl">
         <mat-datepicker-toggle matSuffix [for]="pickerend"></mat-datepicker-toggle>
         <mat-datepicker #pickerend></mat-datepicker>
       </mat-form-field>
       <mat-divider></mat-divider>
       <div>Days of the week:</div>
       <mat-form-field class="one-line">
-        <mat-chip-list [multiple]="true" class="flex-row">
+        <mat-chip-list [multiple]="true" class="flex-row" formControlName="daysFormCtrl">
           <mat-chip *ngFor="let day of organizerFormData.week" (click)="chipclicked(day)" [selected]="day.selected"
             class="flex-item">
             {{day.letter}}
@@ -45,10 +50,10 @@
         event ends so that attendees who only show up to the end cannot check in. It is up to you (you can tweak
         individual times in the last section). </div>
       <mat-form-field>
-        <input matInput type="time" placeholder="Start Time" formControlName="startTimeFormCtrl">
+        <input matInput type="time" placeholder="Start Time" formControlName="startTimeFormCtrl" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="time" placeholder="End Time" formControlName="endTimeFormCtrl">
+        <input matInput type="time" placeholder="End Time" formControlName="endTimeFormCtrl" required>
       </mat-form-field>
 
       <div>
@@ -56,6 +61,7 @@
         <button mat-button matStepperNext type="button">Next</button>
       </div>
     </mat-step>
+    <!-- WHERE ------------------------------------------------------------------------------------------------------->
     <mat-step formGroupName="2" [stepControl]="formArray.get([2])">
       <ng-template matStepLabel>
         <div>Where</div>
@@ -69,33 +75,30 @@
       </div>
       <mat-form-field>
         <mat-label>Coordinates</mat-label>
-        <input matInput placeholder="latitude,longitude" formdControlName="coordsFormCtrl">
+        <input matInput placeholder="latitude,longitude" formControlName="coordsFormCtrl" required>
         <mat-error>The input is invalid.</mat-error>
       </mat-form-field>
-      <div>Attendees must be within: <mat-form-field>
+      <div>Attendees must be within:
+        <mat-form-field>
           <mat-label>Meters</mat-label>
-          <input matInput formdControlName="coordsFormCtrl">
+          <input matInput formControlName="metersFormCtrl" type="number" required>
           <mat-error>The input is invalid.</mat-error>
         </mat-form-field> meters to check in.
       </div>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button">Next</button>
+        <button mat-button matStepperNext type="button" (click)="generateMeetings()">Next</button>
       </div>
     </mat-step>
-    <mat-step formGroupName="1" [stepControl]="formArray.get([3])">
+    <mat-step formGroupName="3" [stepControl]="formArray.get([3])">
       <ng-template matStepLabel>
         <div>Customize</div>
       </ng-template>
       <div>Review</div>
-      <app-meeting></app-meeting>
-      <app-meeting></app-meeting>
-      <app-meeting></app-meeting>
-      <!-- <mat-form-field>
-        <mat-label>Email address</mat-label>
-        <input matInput formdControlName="emailFormCtrl">
-        <mat-error>The input is invalid.</mat-error>
-      </mat-form-field> -->
+      <app-meeting *ngFor="let meeting of organizerFormData.meetings" [meeting]="meeting"></app-meeting>
+      <button mat-button mat-icon-button>
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
         <button mat-button matStepperNext type="button">Next</button>

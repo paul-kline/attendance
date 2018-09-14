@@ -2,23 +2,27 @@
 <app-datetimepicker [datetime]="meeting.to"></app-datetimepicker>
 <input type="number" [(ngModel)]="meeting.lat">
 <input type="number" [(ngModel)]="meeting.lng"> -->
-<span class="flex-row  pl-2 pr-2">
+<div class="flex-row-nowrap" *ngIf="meeting">
+    <span id="meetingscontainer" class="flex-row pl-2 pr-2 mt-1">
 
-    <mat-form-field>
-        <mat-label>Starting</mat-label>
-        <input matInput placeholder="starting" type="datetime-local">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Ending</mat-label>
-        <input matInput placeholder="ending" type="datetime-local">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Location</mat-label>
-        <input matInput placeholder="lat, lng">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Within</mat-label>
-        <input matInput placeholder="meters">
-    </mat-form-field>
-
-</span>
+        <mat-form-field class="longer">
+            <mat-label>Starting</mat-label>
+            <input matInput placeholder="starting" type="datetime-local" [(ngModel)]="strFrom" (ngModelChange)="newStartTime()">
+        </mat-form-field>
+        <mat-form-field class="longer">
+            <mat-label>Ending</mat-label>
+            <input matInput placeholder="ending" type="datetime-local" [(ngModel)]="strTo" (ngModelChange)="newEndTime()">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Location</mat-label>
+            <input matInput placeholder="lat, lng" [(ngModel)]="strLoc" (ngModelChange)="newLoc()">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Within</mat-label>
+            <input matInput placeholder="meters" type=number [(ngModel)]="meeting.distance">
+        </mat-form-field>
+    </span>
+    <button mat-button mat-icon-button>
+        <mat-icon>delete</mat-icon>
+    </button>
+</div>
