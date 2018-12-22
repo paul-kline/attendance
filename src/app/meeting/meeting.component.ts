@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Meeting } from "../Meeting";
+import { Coords } from "../Coords";
 
 @Component({
   selector: "app-meeting",
@@ -9,6 +10,8 @@ import { Meeting } from "../Meeting";
 export class MeetingComponent implements OnInit {
   @Input()
   public meeting: Meeting;
+  @Output()
+  deleted = new EventEmitter<Meeting>();
   constructor() {}
 
   public strFrom: string = "";
@@ -16,14 +19,22 @@ export class MeetingComponent implements OnInit {
   public strLoc: string = "";
 
   ngOnInit() {
-    this.strFrom = this.dateTimeToString(this.meeting.from);
-    this.strTo = this.dateTimeToString(this.meeting.to);
-    this.strLoc = this.meeting.location.toString();
+    this.strFrom = this.dateTimeToString(this.meeting.from || new Date());
+    this.strTo = this.dateTimeToString(this.meeting.to || new Date());
+    try {
+      this.strLoc = this.meeting.location.toString();
+    } catch (error) {
+      console.log("location didn't exist");
+      this.meeting.location = new Coords(0, 0);
+    }
     // this.newStartTime();
     // this.newEndTime();
     // this.newLoc();
   }
 
+  onDelete() {
+    this.deleted.emit(this.meeting);
+  }
   dateTimeToString(d: Date): string {
     // return d.toISOString().slice(0, -1);
     let two = (n: Number): String => (n < 10 ? "0" + n : "" + n);

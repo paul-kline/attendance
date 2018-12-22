@@ -11,6 +11,8 @@ import {
   FormArray
 } from "@angular/forms";
 import { Coords } from "../Coords";
+import { Meeting } from "../Meeting";
+import { CredentialsService } from "../credentials.service";
 @Component({
   selector: "app-organizerform",
   templateUrl: "./organizerform.component.html",
@@ -26,6 +28,7 @@ export class OrganizerformComponent implements OnInit {
   whenFormGroup: FormGroup; //When info like date interval, time, days of week.
   whereFormGroup: FormGroup;
   confirmFormGroup: FormGroup;
+  whoFormGroup: FormGroup;
   get formArray(): AbstractControl | null {
     return this.formGroup.get("formArray");
   }
@@ -34,7 +37,8 @@ export class OrganizerformComponent implements OnInit {
   }
   constructor(
     public orgService: OrganizationformdataService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private credentialService: CredentialsService
   ) {
     this.organizerFormData = orgService.organizerFormData;
   }
@@ -46,6 +50,33 @@ export class OrganizerformComponent implements OnInit {
       "I have generated the meetings, here is my organizerFromData.meetings",
       this.organizerFormData.meetings
     );
+  }
+  aMeetingDeleted(m: Meeting) {
+    console.log("someone wants to delete", m);
+    let arr = this.organizerFormData.meetings;
+    let i = arr.indexOf(m);
+    arr.splice(i, 1);
+    // this.organizerFormData.meetings.
+  }
+  addNewMeeting() {
+    let arr = this.organizerFormData.meetings;
+    let m = new Meeting();
+    arr.push(m);
+    // window.lastm = m;
+  }
+  onCreateClass() {
+    //I suppose all we really need is the list of meetings, the name, and the creator/owner.
+    const [earliest, latest] = this.organizerFormData.getEarliestLatest();
+    const creatorID = this.credentialService.afAuth.auth.currentUser.uid;
+    const creatorName = this.credentialService.afAuth.auth.currentUser
+      .displayName;
+    const creatorEmail = this.credentialService.afAuth.auth.currentUser.email;
+    const meetings = this.organizerFormData.meetings;
+  }
+  customizeClicked() {
+    try {
+      this.generateMeetings();
+    } catch (error) {}
   }
   setWithFormData() {
     let o = this.organizerFormData;
@@ -89,22 +120,33 @@ export class OrganizerformComponent implements OnInit {
     });
 
     this.whenFormGroup = this._formBuilder.group({
-      startDateFormCtrl: [this.organizerFormData.fromDate, null], //Validators.required],
-      endDateFormCtrl: [this.organizerFormData.toDate, null], //Validators.required],
+      startDateFormCtrl: [this.organizerFormData.fromDate, Validators.required],
+      endDateFormCtrl: [this.organizerFormData.toDate, Validators.required],
       daysFormCtrl: [],
-      startTimeFormCtrl: [this.organizerFormData.fromTime, null], //Validators.required],
-      endTimeFormCtrl: [this.organizerFormData.toTime, null] //Validators.required]
+      startTimeFormCtrl: [this.organizerFormData.fromTime, Validators.required],
+      endTimeFormCtrl: [this.organizerFormData.toTime, Validators.required]
     });
     this.whereFormGroup = this._formBuilder.group({
-      coordsFormCtrl: [this.organizerFormData.locationString, null], //Validators.required],
-      metersFormCtrl: [this.organizerFormData.withinMeters] //Validators.required],
+      coordsFormCtrl: [
+        this.organizerFormData.locationString,
+        Validators.pattern(`(-)?[0-9]+.[0-9]+,( )*(-)?[0-9]+.[0-9]+`)
+      ],
+      metersFormCtrl: [this.organizerFormData.withinMeters, Validators.min(1)]
     });
     //
+    this.whoFormGroup = this._formBuilder.group({
+      coordsFormCtrl: [
+        this.organizerFormData.locationString,
+        Validators.pattern(`(-)?[0-9]+.[0-9]+,( )*(-)?[0-9]+.[0-9]+`)
+      ],
+      metersFormCtrl: [this.organizerFormData.withinMeters, Validators.min(1)]
+    });
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this.nameFormGroup,
         this.whenFormGroup,
         this.whereFormGroup,
+        this.whoFormGroup,
         this._formBuilder.group({})
       ])
     });

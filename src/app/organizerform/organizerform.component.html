@@ -48,7 +48,7 @@
         this start time to be before your actual start time so that attendees who
         arrive early can check in. Similarly, you may want to set the end time before your actual
         event ends so that attendees who only show up to the end cannot check in. It is up to you (you can tweak
-        individual times in the last section). </div>
+        individual times in the final section). </div>
       <mat-form-field>
         <input matInput type="time" placeholder="Start Time" formControlName="startTimeFormCtrl" required>
       </mat-form-field>
@@ -87,21 +87,74 @@
       </div>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+    </mat-step>
+    <!-- WHO --------------------------------------------------------------------------------->
+    <mat-step formGroupName="3" [stepControl]="formArray.get([3])">
+      <ng-template matStepLabel>
+        <div>Who</div>
+      </ng-template>
+      <div> Who can attend?</div>
+      <mat-form-field style="min-width:300px">
+        <mat-select #whochoice placeholder="who" (value)="organizerFormData.who.selection">
+          <mat-option *ngFor="let choice of organizerFormData.whocanchoices" [value]="choice.value">
+            {{choice.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div *ngIf="whochoice.value=='anyone'">
+        Anyone?? Ya sure??
+      </div>
+      <div *ngIf="whochoice.value=='password'">
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput type="text" [(ngModel)]="organizerFormData.who.password" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </div>
+      <div *ngIf="whochoice.value=='accounts'">
+        <div>Enter the (Gmail) email addresses below. Comma or line separated.</div>
+        <mat-form-field style="min-width: 250px">
+          <mat-label>Account Emails</mat-label>
+          <textarea matInput cdkTextareaAutosize [(ngModel)]="organizerFormData.who.accountemailstxt" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+      </div>
+      <div *ngIf="whochoice.value=='uniqueField'">
+        <div>What is the name of the Unique ID which must be entered? For example, Student ID.</div>
+        <mat-form-field style="min-width: 250px">
+          <mat-label>Field Name</mat-label>
+          <input matInput type="text" [(ngModel)]="organizerFormData.who.fieldname" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <div *ngIf="organizerFormData.who.fieldname">
+          <div>Enter the values below. Comma or line separated.</div>
+          <mat-form-field style="min-width: 250px">
+            <mat-label>{{organizerFormData.who.fieldname + "'s"}}</mat-label>
+            <textarea matInput cdkTextareaAutosize [(ngModel)]="organizerFormData.who.uniqueidstxt" [ngModelOptions]="{standalone: true}"></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div>
+        <button mat-button matStepperPrevious type="button">Back</button>
         <button mat-button matStepperNext type="button" (click)="generateMeetings()">Next</button>
       </div>
     </mat-step>
-    <mat-step formGroupName="3" [stepControl]="formArray.get([3])">
+    <!-- CUSTOMIZE ------------------------------------------------------------------------->
+    <mat-step formGroupName="4" [stepControl]="formArray.get([4])">
       <ng-template matStepLabel>
-        <div>Customize</div>
+        <div style="width:100%; height:100%" (click)="customizeClicked()">Customize</div>
       </ng-template>
       <div>Review</div>
-      <app-meeting *ngFor="let meeting of organizerFormData.meetings" [meeting]="meeting"></app-meeting>
-      <button mat-button mat-icon-button>
+      <app-meeting *ngFor="
+          let meeting of organizerFormData.meetings" [meeting]="meeting" (deleted)="aMeetingDeleted($event)">
+      </app-meeting>
+      <button mat-button mat-icon-button (click)="addNewMeeting()">
         <mat-icon>add_circle_outline</mat-icon>
       </button>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button">Next</button>
+        <button mat-button matStepperNext type="button" (click)="onCreateClass()">Create Class</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

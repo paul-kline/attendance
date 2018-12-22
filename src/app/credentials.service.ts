@@ -52,7 +52,8 @@ export class CredentialsService {
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
-          console.log("this user has no account yet.");
+          console.log("this user has no account yet. creating!");
+          return me.createNewUser();
           // me.router.navigateByUrl("/newuser");
         }
       })
@@ -62,5 +63,21 @@ export class CredentialsService {
 
     console.log("user data", u);
     return u;
+  }
+
+  async createNewUser() {
+    // https://github.com/angular/angularfire2/blob/master/docs/firestore/collections.md
+    const userCollection = this.afs.collection("users");
+    const user = this.afAuth.auth.currentUser;
+    const email = user.email;
+    const displayname = user.displayName;
+    const photourl = user.photoURL;
+
+    userCollection
+      .doc(user.uid)
+      .set(
+        { email: email, name: displayname, photourl: photourl },
+        { merge: true }
+      );
   }
 }

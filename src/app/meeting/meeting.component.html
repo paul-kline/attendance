@@ -22,7 +22,7 @@
             <input matInput placeholder="meters" type=number [(ngModel)]="meeting.distance">
         </mat-form-field>
     </span>
-    <button mat-button mat-icon-button>
+    <button mat-button mat-icon-button (click)=onDelete()>
         <mat-icon>delete</mat-icon>
     </button>
 </div>
