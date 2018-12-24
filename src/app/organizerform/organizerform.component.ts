@@ -29,6 +29,7 @@ export class OrganizerformComponent implements OnInit {
   whereFormGroup: FormGroup;
   confirmFormGroup: FormGroup;
   whoFormGroup: FormGroup;
+  classLink: string;
   get formArray(): AbstractControl | null {
     return this.formGroup.get("formArray");
   }
@@ -60,18 +61,17 @@ export class OrganizerformComponent implements OnInit {
   }
   addNewMeeting() {
     let arr = this.organizerFormData.meetings;
-    let m = new Meeting();
+    let m = new Meeting(
+      arr && arr.length > 0 ? arr[arr.length - 1].toGeneric() : {}
+    );
     arr.push(m);
     // window.lastm = m;
   }
-  onCreateClass() {
-    //I suppose all we really need is the list of meetings, the name, and the creator/owner.
-    const [earliest, latest] = this.organizerFormData.getEarliestLatest();
-    const creatorID = this.credentialService.afAuth.auth.currentUser.uid;
-    const creatorName = this.credentialService.afAuth.auth.currentUser
-      .displayName;
-    const creatorEmail = this.credentialService.afAuth.auth.currentUser.email;
-    const meetings = this.organizerFormData.meetings;
+  async onCreateClass() {
+    const classID = await this.credentialService.createNewClass(
+      this.organizerFormData
+    );
+    this.classLink = `/signup/${classID}`;
   }
   customizeClicked() {
     try {
@@ -151,7 +151,7 @@ export class OrganizerformComponent implements OnInit {
       ])
     });
     this.initializeValues();
-    window.form = this.formArrayasFormArray;
+    window["form"] = this.formArrayasFormArray;
 
     // this.nameFormGroup = this._formBuilder.group({
     //   nameFormCtrl: ["bob", Validators.required]

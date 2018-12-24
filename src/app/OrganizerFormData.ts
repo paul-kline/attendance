@@ -25,7 +25,6 @@ export class OrganizerFormData implements OnInit {
     accountemailstxt: "",
     fieldname: "",
     uniqueidstxt: ""
-
   };
 
   week = [
@@ -84,7 +83,7 @@ export class OrganizerFormData implements OnInit {
       // if (this.week[W[cur_start.getDay()]].selected) {
       if (this.week[(cur_start.getDay() + 6) % 7].selected) {
         // console.log("this day!!");
-        let m = new Meeting();
+        let m = new Meeting({});
         m.from = cur_start;
         console.log("jsut set from to ", cur_start);
         m.to = cur_end;

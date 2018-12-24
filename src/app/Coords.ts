@@ -6,7 +6,15 @@ export class Coords {
     this.lng = lng;
     return;
   }
-
+  static mkCoords(obj): Coords {
+    return new Coords(obj.lat, obj.lng);
+  }
+  toGeneric() {
+    return Object.assign({}, this);
+  }
+  static fromGeneric(obj: {}) {
+    return Coords.mkCoords(obj);
+  }
   toString() {
     return this.lat + "," + this.lng;
   }

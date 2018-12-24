@@ -39,6 +39,8 @@ import {
 } from "@angular/material";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MaterialWeeklyChooserComponent } from "./material-weekly-chooser/material-weekly-chooser.component";
+import { HomeComponent } from './home/home.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { MaterialWeeklyChooserComponent } from "./material-weekly-chooser/materi
     DaterangepickerComponent,
     DatetimepickerComponent,
     MeetingComponent,
-    MaterialWeeklyChooserComponent
+    MaterialWeeklyChooserComponent,
+    HomeComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

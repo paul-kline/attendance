@@ -8,7 +8,7 @@ export class OrganizationformdataService {
   constructor() {
     this.organizerFormData = new OrganizerFormData();
 
-    window.formData = this.organizerFormData;
+    window["formData"] = this.organizerFormData;
     console.log("set form data as window prop");
   }
 }

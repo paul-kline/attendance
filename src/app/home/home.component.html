@@ -1,0 +1,51 @@
+<p>home works!</p>
+<div class="container">
+  <div *ngIf="attendsClasses()">
+    <h3>Classes you attend:</h3>
+    <!-- <mat-divider></mat-divider> -->
+    <div *ngFor="let cl of aclasses">
+      <div>
+        <h4>{{ cl.name }}</h4>
+        <div>ID : {{ cl.id }}</div>
+        <div *ngIf="isMeetingNow(cl)">Class is now!!</div>
+        <div *ngIf="!cl.curMeeting">
+          No Meeting at this time.
+          <div>
+            Next meeting:
+            {{
+              nextMeeting(cl)
+                .from.toDate()
+                .toLocaleString()
+            }}
+          </div>
+        </div>
+        <button
+          *ngIf="cl.curMeeting && cl.canCheckIn(coords)"
+          (click)="checkIn(cl)"
+          mat-button
+        >
+          Check in!
+        </button>
+        <div></div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+    <div *ngIf="ownsClasses()">
+      <h3>Classes you own:</h3>
+      <!-- <mat-divider></mat-divider> -->
+      <div *ngFor="let cl of ownClasses()">
+        <div>
+          <h4>{{ cl.name }}</h4>
+          <div>
+            Sign up link:
+            <a *ngIf="origin" [href]="'/signup/' + cl.docID">{{
+              origin + "/" + cl.docID
+            }}</a>
+          </div>
+          <div></div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+  </div>
+</div>

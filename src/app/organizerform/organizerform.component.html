@@ -1,59 +1,107 @@
 <mat-icon>home</mat-icon>
 
-
-
 <form [formGroup]="formGroup" class="flex-scolumn-center">
   <mat-horizontal-stepper formArrayName="formArray" linear>
     <!-- NAME -------------------------------------------------------------------------------------------------->
-    <mat-step class="flex-column-center" formGroupName="0" [stepControl]="formArray.get([0])">
+    <mat-step
+      class="flex-column-center"
+      formGroupName="0"
+      [stepControl]="formArray.get([0])"
+    >
       <ng-template matStepLabel>What</ng-template>
       <div>What is the name of your class? For example, EECS 368 Fall 2018</div>
       <mat-form-field>
         <mat-label>Class Name</mat-label>
-        <input matInput #txtname (keyup.enter)="clickelem('namenext')" formControlName="nameFormCtrl" required>
+        <input
+          matInput
+          #txtname
+          (keyup.enter)="clickelem('namenext')"
+          formControlName="nameFormCtrl"
+          required
+        />
         <mat-error>This field is required</mat-error>
       </mat-form-field>
       <div>
-        <button id="namenext" mat-button matStepperNext type="button">Next</button>
+        <button id="namenext" mat-button matStepperNext type="button">
+          Next
+        </button>
       </div>
     </mat-step>
     <!-- WHEN --------------------------------------------------------------------------------------------------->
     <mat-step formGroupName="1" [stepControl]="formArray.get([1])">
-      <ng-template matStepLabel>
-        <div>When</div>
-      </ng-template>
+      <ng-template matStepLabel> <div>When</div> </ng-template>
       <mat-form-field class="mr-2">
-        <input matInput [matDatepicker]="pickerstart" placeholder="Start Date" required formControlName="startDateFormCtrl">
-        <mat-datepicker-toggle matSuffix [for]="pickerstart"></mat-datepicker-toggle>
+        <input
+          matInput
+          [matDatepicker]="pickerstart"
+          placeholder="Start Date"
+          required
+          formControlName="startDateFormCtrl"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerstart"
+        ></mat-datepicker-toggle>
         <mat-datepicker #pickerstart></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="pickerend" placeholder="End Date" required formControlName="endDateFormCtrl">
-        <mat-datepicker-toggle matSuffix [for]="pickerend"></mat-datepicker-toggle>
+        <input
+          matInput
+          [matDatepicker]="pickerend"
+          placeholder="End Date"
+          required
+          formControlName="endDateFormCtrl"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerend"
+        ></mat-datepicker-toggle>
         <mat-datepicker #pickerend></mat-datepicker>
       </mat-form-field>
       <mat-divider></mat-divider>
       <div>Days of the week:</div>
       <mat-form-field class="one-line">
-        <mat-chip-list [multiple]="true" class="flex-row" formControlName="daysFormCtrl">
-          <mat-chip *ngFor="let day of organizerFormData.week" (click)="chipclicked(day)" [selected]="day.selected"
-            class="flex-item">
-            {{day.letter}}
+        <mat-chip-list
+          [multiple]="true"
+          class="flex-row"
+          formControlName="daysFormCtrl"
+        >
+          <mat-chip
+            *ngFor="let day of organizerFormData.week"
+            (click)="chipclicked(day)"
+            [selected]="day.selected"
+            class="flex-item"
+          >
+            {{ day.letter }}
           </mat-chip>
         </mat-chip-list>
-
       </mat-form-field>
-      <div>Enter the starting and ending times. Note that this is the time
-        users will be able to mark themselves as present. You probably want to set
-        this start time to be before your actual start time so that attendees who
-        arrive early can check in. Similarly, you may want to set the end time before your actual
-        event ends so that attendees who only show up to the end cannot check in. It is up to you (you can tweak
-        individual times in the final section). </div>
+      <div>
+        Enter the starting and ending times. Note that this is the time users
+        will be able to mark themselves as present. You probably want to set
+        this start time to be before your actual start time so that attendees
+        who arrive early can check in. Similarly, you may want to set the end
+        time before your actual event ends so that attendees who only show up to
+        the end cannot check in. It is up to you (you can tweak individual times
+        in the final section).
+      </div>
       <mat-form-field>
-        <input matInput type="time" placeholder="Start Time" formControlName="startTimeFormCtrl" required>
+        <input
+          matInput
+          type="time"
+          placeholder="Start Time"
+          formControlName="startTimeFormCtrl"
+          required
+        />
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="time" placeholder="End Time" formControlName="endTimeFormCtrl" required>
+        <input
+          matInput
+          type="time"
+          placeholder="End Time"
+          formControlName="endTimeFormCtrl"
+          required
+        />
       </mat-form-field>
 
       <div>
@@ -63,27 +111,38 @@
     </mat-step>
     <!-- WHERE ------------------------------------------------------------------------------------------------------->
     <mat-step formGroupName="2" [stepControl]="formArray.get([2])">
-      <ng-template matStepLabel>
-        <div>Where</div>
-      </ng-template>
+      <ng-template matStepLabel> <div>Where</div> </ng-template>
 
-      <div>What are the geographic coordinates (in lat,lng format) of the <i>most common</i> meeting space? You can
-        use <a target="_blank" href="//www.google.com/maps/">Google
-          Maps
-        </a> to get the exact coordinates. (You can fine tune the location for each meeting later if necessary)
-
+      <div>
+        What are the geographic coordinates (in lat,lng format) of the
+        <i>most common</i> meeting space? You can use
+        <a target="_blank" href="//www.google.com/maps/">Google Maps </a> to get
+        the exact coordinates. (You can fine tune the location for each meeting
+        later if necessary)
       </div>
       <mat-form-field>
         <mat-label>Coordinates</mat-label>
-        <input matInput placeholder="latitude,longitude" formControlName="coordsFormCtrl" required>
+        <input
+          matInput
+          placeholder="latitude,longitude"
+          formControlName="coordsFormCtrl"
+          required
+        />
         <mat-error>The input is invalid.</mat-error>
       </mat-form-field>
-      <div>Attendees must be within:
+      <div>
+        Attendees must be within:
         <mat-form-field>
           <mat-label>Meters</mat-label>
-          <input matInput formControlName="metersFormCtrl" type="number" required>
+          <input
+            matInput
+            formControlName="metersFormCtrl"
+            type="number"
+            required
+          />
           <mat-error>The input is invalid.</mat-error>
-        </mat-form-field> meters to check in.
+        </mat-form-field>
+        meters to check in.
       </div>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
@@ -92,74 +151,125 @@
     </mat-step>
     <!-- WHO --------------------------------------------------------------------------------->
     <mat-step formGroupName="3" [stepControl]="formArray.get([3])">
-      <ng-template matStepLabel>
-        <div>Who</div>
-      </ng-template>
-      <div> Who can attend?</div>
+      <ng-template matStepLabel> <div>Who</div> </ng-template>
+      <div>Who can attend?</div>
       <mat-form-field style="min-width:300px">
-        <mat-select #whochoice placeholder="who" (value)="organizerFormData.who.selection">
-          <mat-option *ngFor="let choice of organizerFormData.whocanchoices" [value]="choice.value">
-            {{choice.viewValue}}
+        <mat-select
+          #whochoice
+          placeholder="who"
+          (value)="(organizerFormData.who.selection)"
+        >
+          <mat-option
+            *ngFor="let choice of organizerFormData.whocanchoices"
+            [value]="choice.value"
+          >
+            {{ choice.viewValue }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-divider></mat-divider>
-      <div *ngIf="whochoice.value=='anyone'">
-        Anyone?? Ya sure??
-      </div>
-      <div *ngIf="whochoice.value=='password'">
+      <div *ngIf="whochoice.value == 'anyone'">Anyone?? Ya sure??</div>
+      <div *ngIf="whochoice.value == 'password'">
         <mat-form-field>
           <mat-label>Password</mat-label>
-          <input matInput type="text" [(ngModel)]="organizerFormData.who.password" [ngModelOptions]="{standalone: true}">
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="organizerFormData.who.password"
+            [ngModelOptions]="{ standalone: true }"
+          />
         </mat-form-field>
       </div>
-      <div *ngIf="whochoice.value=='accounts'">
-        <div>Enter the (Gmail) email addresses below. Comma or line separated.</div>
+      <div *ngIf="whochoice.value == 'accounts'">
+        <div>
+          Enter the (Gmail) email addresses below. Comma or line separated.
+        </div>
         <mat-form-field style="min-width: 250px">
           <mat-label>Account Emails</mat-label>
-          <textarea matInput cdkTextareaAutosize [(ngModel)]="organizerFormData.who.accountemailstxt" [ngModelOptions]="{standalone: true}"></textarea>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            [(ngModel)]="organizerFormData.who.accountemailstxt"
+            [ngModelOptions]="{ standalone: true }"
+          ></textarea>
         </mat-form-field>
       </div>
-      <div *ngIf="whochoice.value=='uniqueField'">
-        <div>What is the name of the Unique ID which must be entered? For example, Student ID.</div>
+      <div *ngIf="whochoice.value == 'uniqueField'">
+        <div>
+          What is the name of the Unique ID which must be entered? For example,
+          Student ID.
+        </div>
         <mat-form-field style="min-width: 250px">
           <mat-label>Field Name</mat-label>
-          <input matInput type="text" [(ngModel)]="organizerFormData.who.fieldname" [ngModelOptions]="{standalone: true}">
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="organizerFormData.who.fieldname"
+            [ngModelOptions]="{ standalone: true }"
+          />
         </mat-form-field>
         <div *ngIf="organizerFormData.who.fieldname">
           <div>Enter the values below. Comma or line separated.</div>
           <mat-form-field style="min-width: 250px">
-            <mat-label>{{organizerFormData.who.fieldname + "'s"}}</mat-label>
-            <textarea matInput cdkTextareaAutosize [(ngModel)]="organizerFormData.who.uniqueidstxt" [ngModelOptions]="{standalone: true}"></textarea>
+            <mat-label>{{ organizerFormData.who.fieldname + "'s" }}</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              [(ngModel)]="organizerFormData.who.uniqueidstxt"
+              [ngModelOptions]="{ standalone: true }"
+            ></textarea>
           </mat-form-field>
         </div>
-
       </div>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button" (click)="generateMeetings()">Next</button>
+        <button
+          mat-button
+          matStepperNext
+          type="button"
+          (click)="generateMeetings()"
+        >
+          Next
+        </button>
       </div>
     </mat-step>
     <!-- CUSTOMIZE ------------------------------------------------------------------------->
     <mat-step formGroupName="4" [stepControl]="formArray.get([4])">
       <ng-template matStepLabel>
-        <div style="width:100%; height:100%" (click)="customizeClicked()">Customize</div>
+        <div style="width:100%; height:100%" (click)="customizeClicked()">
+          Customize
+        </div>
       </ng-template>
       <div>Review</div>
-      <app-meeting *ngFor="
-          let meeting of organizerFormData.meetings" [meeting]="meeting" (deleted)="aMeetingDeleted($event)">
+      <app-meeting
+        *ngFor="let meeting of organizerFormData.meetings"
+        [meeting]="meeting"
+        (deleted)="aMeetingDeleted($event)"
+      >
       </app-meeting>
       <button mat-button mat-icon-button (click)="addNewMeeting()">
         <mat-icon>add_circle_outline</mat-icon>
       </button>
       <div>
         <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button" (click)="onCreateClass()">Create Class</button>
+        <button
+          mat-button
+          matStepperNext
+          type="button"
+          (click)="onCreateClass()"
+        >
+          Create Class
+        </button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>
 </form>
 
+<div *ngIf="classLink">
+  Congratz! Class created successfully. Please use
+  <a [href]="classLink">{{ classLink }}</a> to get users to sign up for your
+  class.
+</div>
 <!-- 
 <div>What is the name of your class? For example, EECS 368 Fall 2018
   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="EECS 368 Fall 2018"

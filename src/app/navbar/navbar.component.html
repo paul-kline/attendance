@@ -1,16 +1,26 @@
 <mat-toolbar color="primary">
-  <span>@tendance</span>
+  <span
+    ><a style="text-decoration: none; color:white" href="/home"
+      >@tendance</a
+    ></span
+  >
 
   <!-- This fills the remaining space of the current row -->
   <span class="fill-remaining-space"></span>
 
   <span>
-    <div *ngIf="credentialService.afAuth.user | async as user; else showLogin">
+    <div
+      *ngIf="(credentialService.afAuth.user | async) as user; else showLogin"
+    >
       <span class="mr-2">Hello {{ user.displayName }}!</span>
-      <button mat-stroked-button (click)="credentialService.logout()">Logout</button>
+      <button mat-stroked-button (click)="credentialService.logout()">
+        Logout
+      </button>
     </div>
     <ng-template #showLogin>
-      <button mat-stroked-button (click)="credentialService.login()">Login</button>
+      <button mat-stroked-button (click)="credentialService.login()">
+        Login
+      </button>
     </ng-template>
   </span>
 </mat-toolbar>

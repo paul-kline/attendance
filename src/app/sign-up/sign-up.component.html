@@ -1,0 +1,15 @@
+<ng-container
+  *ngIf="aclass && aclass.name; else elseTemplate"
+  style="text-align: center"
+>
+  <div>
+    Class: <span style="font-weight: bold">{{ aclass.name }}</span>
+  </div>
+  <div>
+    Creator: <span style="font-weight: bold">{{ aclass.creatorName }}</span>
+  </div>
+  <button class="mat-raised-button" (click)="addToMyClasses()">
+    Add to My Classes
+  </button>
+</ng-container>
+<ng-template #elseTemplate> No class found. </ng-template>
