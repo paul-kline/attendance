@@ -10,6 +10,7 @@ export class AClass {
   public name: string;
   public from: Date;
   public to: Date;
+  public isStudent: boolean | null;
   public curMeeting: Meeting | null;
   constructor() {}
   canCheckIn(coords: { lat; lng }) {
@@ -24,13 +25,15 @@ export class AClass {
       ) <= this.curMeeting.distance
     );
   }
-  nextMeeting(aclass) {
-    let nt = firebase.firestore.Timestamp.fromDate(new Date());
-    return aclass["meetings"].find(x => x.to > nt);
+  nextMeeting(): Meeting | null {
+    // let nt = firebase.firestore.Timestamp.fromDate(new Date());
+    let nt = new Date();
+    return this.meetings.find(x => x.to > nt);
   }
-  isMeetingNow(aclass) {
-    const nt = firebase.firestore.Timestamp.fromDate(new Date());
-    const cl = this.nextMeeting(aclass);
+  isMeetingNow() {
+    // const nt = firebase.firestore.Timestamp.fromDate(new Date());
+    const nt = new Date();
+    const cl = this.nextMeeting();
     const b = cl.from <= nt && nt <= cl.to;
     // if (b) {
     //   this.rightNowClasses.push({ className: aclass.name, meeting: cl });
@@ -40,7 +43,14 @@ export class AClass {
   isAccurate(coords) {
     return this.curMeeting && this.curMeeting.distance >= coords.accuracy;
   }
-  getcurMeeting() {}
+  getcurMeeting() {
+    if (this.curMeeting) {
+      return this.curMeeting;
+    } else {
+      this.curMeeting = this.isMeetingNow() ? this.nextMeeting() : null;
+      return this.curMeeting;
+    }
+  }
   toGeneric() {
     let res = Object.assign({}, this);
     res.meetings = res.meetings.map(m => m.toGeneric());
@@ -63,24 +73,36 @@ export class AClass {
     var d = R * c; // Distance in km
     return d;
   }
-  static fromGeneric(obj: { meetings; creatorName }): AClass {
+  static fromGeneric(obj: { meetings; creatorName } | any): AClass {
     console.log("in fromGeneric for AClass", obj);
     let c = new AClass();
+    c.isStudent = c.init(obj, "isStudent");
     c.creatorName = c.init(obj, "creatorName");
     c.creatorEmail = c.init(obj, "creatorEmail");
     c.creatorID = c.init(obj, "creatorID");
-    c.classID = c.init(obj, "classID");
-    c.meetings = obj.meetings ? obj.meetings.map(m => new Meeting(m)) : [];
+    c.classID = c.init(obj, "classID", "id");
+    // c.classID = c.init(obj, "id"); //handle named id instead.
+    c.meetings = obj.meetings
+      ? obj.meetings.map(m => Meeting.fromGeneric(m))
+      : [];
     c.from = c.init(obj, "from");
     c.to = c.init(obj, "to");
     c.name = c.init(obj, "name");
 
-    c.creatorName = obj.creatorName ? obj.creatorName : null;
-    c.creatorName = obj.creatorName ? obj.creatorName : null;
-    c.creatorName = obj.creatorName ? obj.creatorName : null;
+    // c.creatorName = obj.creatorName ? obj.creatorName : null;
+    // c.creatorName = obj.creatorName ? obj.creatorName : null;
+    // c.creatorName = obj.creatorName ? obj.creatorName : null;
     return c;
   }
-  init(obj, str) {
-    return obj[str] ? obj[str] : null;
+  init(obj, ...strs) {
+    for (let i = 0; i < strs.length; i++) {
+      const str = strs[i];
+      const p = obj[str];
+      if (p != undefined && p != null) {
+        return p;
+      }
+    }
+    return null;
+    // return obj[str] ? obj[str] : this[str] ? this[str] : null;
   }
 }

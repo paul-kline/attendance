@@ -6,18 +6,11 @@
     <div *ngFor="let cl of aclasses">
       <div>
         <h4>{{ cl.name }}</h4>
-        <div>ID : {{ cl.id }}</div>
-        <div *ngIf="isMeetingNow(cl)">Class is now!!</div>
-        <div *ngIf="!cl.curMeeting">
+        <div>ID : {{ cl.classID }}</div>
+        <div *ngIf="cl.isMeetingNow()">Class is now!!</div>
+        <div *ngIf="!cl.isMeetingNow()">
           No Meeting at this time.
-          <div>
-            Next meeting:
-            {{
-              nextMeeting(cl)
-                .from.toDate()
-                .toLocaleString()
-            }}
-          </div>
+          <div>Next meeting: {{ cl.nextMeeting().from.toLocaleString() }}</div>
         </div>
         <button
           *ngIf="cl.curMeeting && cl.canCheckIn(coords)"

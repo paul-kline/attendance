@@ -11,6 +11,7 @@ import { Observable } from "rxjs";
 import { OrganizerFormData } from "./OrganizerFormData";
 import * as firebase from "firebase";
 import { AClass } from "./AClass";
+import { Meeting } from "./Meeting";
 
 export interface Item {
   name: string;
@@ -20,8 +21,8 @@ export interface Item {
 })
 export class CredentialsService {
   user: User;
-  rawOwnedClasses: any[];
-  attendingClasses: any[];
+  ownedClasses: AClass[];
+  attendingClasses: AClass[];
   loggedinPromise: Promise<any>;
   constructor(
     public afAuth: AngularFireAuth,
@@ -40,7 +41,39 @@ export class CredentialsService {
       });
     });
   }
-  checkIn(aclass, coords: Coordinates) {
+  checkIn(aclass: AClass, coords: Coordinates) {
+    //to Which meeting?
+    const meet: Meeting = aclass.getcurMeeting();
+    const student: { name; id; email } = {
+      name: this.user.displayName,
+      id: this.user.uid,
+      email: this.user.email
+    };
+    //need to submit the class to two places.
+    //1: add it to my own list that i've attended.
+    const meetingDoc = this.afs
+      .collection("users")
+      .doc(this.user.uid)
+      .collection("attendingClasses")
+      .doc(aclass.classID)
+      .collection("meetings")
+      .doc(meet.from.toLocaleString());
+
+    // var cityRef = db.collection('cities').doc('BJ');
+
+    // var setWithMerge = cityRef.set({
+    //     capital: true
+    // }, { merge: true });
+    //I want to create if not exists (set) and merge makes it not overwrite everything else.
+    //collections implicity created.
+    meetingDoc.set(
+      {
+        attendees: firebase.firestore.FieldValue.arrayUnion(student)
+      },
+      { merge: true }
+    );
+    //2: add it to the "master" class object itself.
+
     console.log("check in attempt", aclass);
   }
   getOwnedClasses() {}
@@ -63,14 +96,14 @@ export class CredentialsService {
     // window.auth = this.afAuth.auth;
     console.log("user logged in, getting user firestore data");
     let userData = await this.getUserData();
-    if (!this.rawOwnedClasses) {
-      this.rawOwnedClasses = await this.getOwnedClassesForUser();
+    if (!this.ownedClasses) {
+      this.ownedClasses = await this.getOwnedClassesForUser();
     }
     if (!this.attendingClasses) {
       this.attendingClasses = await this.getFullAttendedClasses();
     }
     console.log("userData", userData);
-    console.log("ownedClasses", this.rawOwnedClasses);
+    console.log("ownedClasses", this.ownedClasses);
   }
   async getUserData() {
     let me = this;
@@ -98,7 +131,7 @@ export class CredentialsService {
     // console.log("user data", u);
     // return u;
   }
-  async getOwnedClassesForUser() {
+  async getOwnedClassesForUser(): Promise<AClass[]> {
     const uid = this.afAuth.auth.currentUser.uid;
     let classes = [];
     return this.afs
@@ -109,9 +142,9 @@ export class CredentialsService {
         querySnapshot.forEach(function(doc) {
           // doc.data() is never undefined for query doc snapshots
           console.log("claasses!!!!", doc.id, " => ", doc.data());
-          let aclass = doc.data();
-          aclass.docID = doc.id;
-          classes.push(aclass);
+          let aclass = { id: doc.id, ...doc.data() };
+          // aclass.docID = doc.id;
+          classes.push(AClass.fromGeneric(aclass));
         });
         return classes;
       })
@@ -129,7 +162,7 @@ export class CredentialsService {
       .then(qsnap => AClass.fromGeneric({ classID: id, ...qsnap.data() }))
       .catch(e => null); //.ref.get(id).then(qsnap =>{
   }
-  async getMyAttendedClasses() {
+  async getMyAttendedClasses(): Promise<AClass[]> {
     await this.loggedinPromise;
     // console.log("the user is:", JSON.stringify(this.user));
     // const uid = this.afAuth.auth.currentUser.uid;
@@ -141,24 +174,37 @@ export class CredentialsService {
       .collection("attendingClasses")
       .ref.get()
       .then(function(querySnapshot) {
-        let classes = [];
+        let classes: AClass[] = [];
         querySnapshot.forEach(function(doc) {
-          classes.push({ classID: doc.id, name: doc.data().name });
+          classes.push(
+            AClass.fromGeneric({
+              classID: doc.id,
+              name: doc.data().name,
+              isStudent: true
+            })
+          );
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          console.log(
+            "results in getMyAttendedClasses",
+            doc.id,
+            " => ",
+            doc.data()
+          );
         });
         return classes;
       });
   }
-  async getFullAttendedClasses() {
+  async getFullAttendedClasses(): Promise<AClass[]> {
     const mylist = await this.getMyAttendedClasses();
+    console.log("getting full attendded classes, here is mylist:", mylist);
     const p = mylist.map(c =>
       this.afs
         .collection("classes")
         .doc(c.classID)
         .ref.get()
         .then(q => {
-          return { id: q.id, ...q.data() };
+          // console.log("getfullattended classes was:", q, q.data());
+          return AClass.fromGeneric({ id: q.id, ...q.data() });
         })
     );
     console.log("p is:", p);

@@ -4,6 +4,7 @@ import * as firebase from "firebase";
 // import { Location } from "@angular/common"; // <--- Here
 import { PlatformLocation } from "@angular/common";
 import { Router } from "@angular/router";
+import { AClass } from "../AClass";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -87,10 +88,10 @@ export class HomeComponent implements OnInit {
   }
   ownsClasses(): boolean {
     const c = this.credentialService;
-    return c && c.rawOwnedClasses && c.rawOwnedClasses.length > 0;
+    return c && c.ownedClasses && c.ownedClasses.length > 0;
   }
   ownClasses() {
-    return this.credentialService.rawOwnedClasses;
+    return this.credentialService.ownedClasses;
   }
 
   attendsClasses(): boolean {
@@ -109,30 +110,30 @@ export class HomeComponent implements OnInit {
     this.credentialService.getAttended().then(classes => {
       me.aclasses = classes;
       classes.forEach(c => {
-        c.curMeeting = me.isMeetingNow(c);
-        c.isAccurate = coords => {
-          return c.curMeeting && c.curMeeting.distance >= coords.accuracy;
-        };
-        c.canCheckIn = coords => {
-          return (
-            c.curMeeting &&
-            (c.isAccurate(coords) || true) &&
-            me.calcCrowDistM(
-              me.coords.lat,
-              me.coords.lng,
-              c.curMeeting.location.lat,
-              c.curMeeting.location.lng
-            ) <= c.curMeeting.distance
-          );
-        };
+        c.curMeeting = c.isMeetingNow();
+        // c.isAccurate = coords => {
+        //   return c.curMeeting && c.curMeeting.distance >= coords.accuracy;
+        // };
+        // c.canCheckIn = coords => {
+        //   return (
+        //     c.curMeeting &&
+        //     (c.isAccurate(coords) || true) &&
+        //     me.calcCrowDistM(
+        //       me.coords.lat,
+        //       me.coords.lng,
+        //       c.curMeeting.location.lat,
+        //       c.curMeeting.location.lng
+        //     ) <= c.curMeeting.distance
+        //   );
+        // };
       });
       // me.aclasses = classes;
       console.log("classes now have now meeting property set", classes);
     });
   }
-  checkIn(aclass) {
+  checkIn(aclass: AClass) {
     const me = this;
-    if (aclass.curMeeting && aclass.canCheckIn(this.coords)) {
+    if (aclass.isMeetingNow() && aclass.canCheckIn(this.coords)) {
       navigator.geolocation.getCurrentPosition(
         pos => {
           me.credentialService.checkIn(aclass, pos.coords);
@@ -142,17 +143,19 @@ export class HomeComponent implements OnInit {
       );
     }
   }
-  nextMeeting(aclass) {
-    let nt = firebase.firestore.Timestamp.fromDate(new Date());
-    return aclass["meetings"].find(x => x.to > nt);
-  }
-  isMeetingNow(aclass) {
-    const nt = firebase.firestore.Timestamp.fromDate(new Date());
-    const cl = this.nextMeeting(aclass);
-    const b = cl.from <= nt && nt <= cl.to;
-    // if (b) {
-    //   this.rightNowClasses.push({ className: aclass.name, meeting: cl });
-    // }
-    return b ? cl : false;
-  }
+  // nextMeeting(aclass) {
+  //   let nt = firebase.firestore.Timestamp.fromDate(new Date());
+  //   return aclass["meetings"].find(x => x.to > nt);
+  // }
+  // isMeetingNow(aclass) {
+  //   // const nt = firebase.firestore.Timestamp.fromDate(new Date());
+  //   const nt = new Date();
+
+  //   const cl = this.nextMeeting(aclass);
+  //   const b = cl.from <= nt && nt <= cl.to;
+  //   // if (b) {
+  //   //   this.rightNowClasses.push({ className: aclass.name, meeting: cl });
+  //   // }
+  //   return b ? cl : false;
+  // }
 }
