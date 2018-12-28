@@ -13,7 +13,7 @@ export class AClass {
   public isStudent: boolean | null;
   public curMeeting: Meeting | null;
   constructor() {}
-  canCheckIn(coords: { lat; lng }) {
+  canCheckIn(coords: { lat; lng; accuracy }) {
     return (
       this.curMeeting &&
       (this.isAccurate(coords) || true) &&
@@ -40,7 +40,7 @@ export class AClass {
     // }
     return b ? cl : false;
   }
-  isAccurate(coords) {
+  isAccurate(coords: { accuracy }) {
     return this.curMeeting && this.curMeeting.distance >= coords.accuracy;
   }
   getcurMeeting() {

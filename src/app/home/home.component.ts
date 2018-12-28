@@ -12,9 +12,9 @@ import { AClass } from "../AClass";
 })
 export class HomeComponent implements OnInit {
   periodsSet = false;
-  aclasses: any[];
+  aclasses: AClass[];
   origin: string;
-  coords;
+  coords: { lat; lng; latitude; longitude; accuracy };
   geo_options = {
     enableHighAccuracy: true,
     maximumAge: 30000,

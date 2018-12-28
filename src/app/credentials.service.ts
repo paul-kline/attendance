@@ -41,6 +41,12 @@ export class CredentialsService {
       });
     });
   }
+  static toMeetName(meet) {
+    return meet.from
+      .toLocaleString()
+      .replace(/\//g, "_")
+      .replace(/,|\s/g, "_");
+  }
   checkIn(aclass: AClass, coords: Coordinates) {
     //to Which meeting?
     const meet: Meeting = aclass.getcurMeeting();
@@ -49,6 +55,7 @@ export class CredentialsService {
       id: this.user.uid,
       email: this.user.email
     };
+    const meetName = CredentialsService.toMeetName(meet);
     //need to submit the class to two places.
     //1: add it to my own list that i've attended.
     const meetingDoc = this.afs
@@ -57,13 +64,7 @@ export class CredentialsService {
       .collection("attendingClasses")
       .doc(aclass.classID)
       .collection("meetings")
-      .doc(meet.from.toLocaleString());
-
-    // var cityRef = db.collection('cities').doc('BJ');
-
-    // var setWithMerge = cityRef.set({
-    //     capital: true
-    // }, { merge: true });
+      .doc(meetName);
     //I want to create if not exists (set) and merge makes it not overwrite everything else.
     //collections implicity created.
     meetingDoc.set(
@@ -73,8 +74,18 @@ export class CredentialsService {
       { merge: true }
     );
     //2: add it to the "master" class object itself.
-
+    const c = this.afs
+      .collection("classes")
+      .doc(aclass.classID)
+      .collection("meetings")
+      .doc(meetName);
     console.log("check in attempt", aclass);
+    c.set(
+      {
+        attendees: firebase.firestore.FieldValue.arrayUnion(student)
+      },
+      { merge: true }
+    );
   }
   getOwnedClasses() {}
   login() {
@@ -251,13 +262,16 @@ export class CredentialsService {
       .doc(classObj.classID)
       .collection("attendees")
       .doc("registered")
-      .set({
-        registered: firebase.firestore.FieldValue.arrayUnion({
-          name: user.displayName,
-          email: user.email,
-          userID: user.uid
-        })
-      });
+      .set(
+        {
+          registered: firebase.firestore.FieldValue.arrayUnion({
+            name: user.displayName,
+            email: user.email,
+            userID: user.uid
+          })
+        },
+        { merge: true }
+      );
     await x;
     await y;
     console.log("All set!");

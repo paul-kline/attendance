@@ -61,7 +61,7 @@ export class OrganizerformComponent implements OnInit {
   }
   addNewMeeting() {
     let arr = this.organizerFormData.meetings;
-    let m = new Meeting(
+    let m = Meeting.fromGeneric(
       arr && arr.length > 0 ? arr[arr.length - 1].toGeneric() : {}
     );
     arr.push(m);
