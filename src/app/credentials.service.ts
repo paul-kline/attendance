@@ -240,6 +240,7 @@ export class CredentialsService {
         { merge: true }
       );
   }
+
   async addToMyClasses(classObj: AClass) {
     //add user detail to class.
     //add class details to user profile
@@ -276,6 +277,8 @@ export class CredentialsService {
     await y;
     console.log("All set!");
   }
+
+  //add a new class to firestore from an OrginzerFormData.
   async createNewClass(organizerFormData: OrganizerFormData) {
     //I suppose all we really need is the list of meetings, the name, and the creator/owner.
     console.log("org form", organizerFormData);
@@ -299,20 +302,22 @@ export class CredentialsService {
       })
     };
 
+    const classID = classObj.name.replace(/\/|\s/g, "_") + "_" + creatorID;
+
     if (organizerFormData.who["password"]) {
       classObj["password"] = organizerFormData.who["password"];
     }
-    const classObjRef = await classColl.add(classObj);
+    classColl.doc(classID).set(classObj);
     //also add to MY classes, I own.
     const r = this.afs
       .collection("users")
       .doc(creatorID)
       .collection("ownedClasses")
-      .doc(classObjRef.id)
+      .doc(classID)
       .set({
         name: classObj.name,
-        id: classObjRef.id
+        id: classID
       });
-    return classObjRef.id;
+    return classID;
   }
 }

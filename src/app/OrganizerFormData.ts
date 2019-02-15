@@ -59,6 +59,8 @@ export class OrganizerFormData implements OnInit {
     let [h, m] = time.split(":");
     _d.setHours(Number.parseInt(h));
     _d.setMinutes(Number.parseInt(m));
+    _d.setSeconds(0);
+    _d.setMilliseconds(0);
     return _d;
   }
   generateMeetings(wipeAll = true): void {

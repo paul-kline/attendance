@@ -44,24 +44,30 @@ export class HomeComponent implements OnInit {
             accuracy: pos.coords.accuracy
           };
           console.log(me.attendingClasses());
-          me.aclasses.forEach(c => {
-            if (c.curMeeting) {
-              const dist = me.calcCrowDistM(
-                me.coords.lat,
-                me.coords.lng,
-                c.curMeeting.location.lat,
-                c.curMeeting.location.lng
-              );
-              console.log("can check in", c.canCheckIn(me.coords), "c was", c);
-              console.log("is accurate?", c.isAccurate(me.coords));
-
-              console.log(
-                "class:" + c.name + " Your distance:" + dist,
-                "Accuracy:",
-                pos
-              );
-            }
-          });
+          if (me.aclasses) {
+            me.aclasses.forEach(c => {
+              if (c.curMeeting) {
+                const dist = me.calcCrowDistM(
+                  me.coords.lat,
+                  me.coords.lng,
+                  c.curMeeting.location.lat,
+                  c.curMeeting.location.lng
+                );
+                console.log(
+                  "can check in",
+                  c.canCheckIn(me.coords),
+                  "c was",
+                  c
+                );
+                console.log("is accurate?", c.isAccurate(me.coords));
+                console.log(
+                  "class:" + c.name + " Your distance:" + dist,
+                  "Accuracy:",
+                  pos
+                );
+              }
+            });
+          }
         },
         err => {
           console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -132,10 +138,17 @@ export class HomeComponent implements OnInit {
     });
   }
   checkIn(aclass: AClass) {
+    console.log("beginning check in...");
     const me = this;
-    if (aclass.isMeetingNow() && aclass.canCheckIn(this.coords)) {
+    if (
+      aclass.isMeetingNow() &&
+      aclass.canCheckIn(this.coords) &&
+      navigator.geolocation
+    ) {
+      console.log("login requirements met. begin query location");
       navigator.geolocation.getCurrentPosition(
         pos => {
+          console.log("position found: calling credentialService checkIn");
           me.credentialService.checkIn(aclass, pos.coords);
         },
         null,
